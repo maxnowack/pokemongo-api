@@ -1,7 +1,7 @@
-
 import Player from '~/Player'
 import API from '~/API'
-import Item from '~/Item'
+// import Item from '~/Item'
+import Inventory from '~/Inventory'
 import Pokemon from '~/Pokemon'
 import Fort from '~/Fort'
 import {getCellIDs} from '~/Utils'
@@ -22,6 +22,7 @@ class PokemonGOAPI {
   constructor(props) {
     this.player = new Player(this)
     this.api = new API(this)
+    this.inventory = new Inventory(this)
     this.logged = false
     this.debug = true
     this.useHeartBeat = false
@@ -88,48 +89,44 @@ class PokemonGOAPI {
    * @return {[type]}     [description]
    */
   async GetInventory() {
-    let res = await this.Call([{
-      request: 'GET_INVENTORY',
-      message: {
-        last_timestamp_ms: 0
-      }
-    }])
+    await this.inventory.update()
 
-    let inventory = {
-      pokemons: [],
-      items: {},
-      eggs: [],
-      candies: []
-    }
 
-    var itemData = PokemonGOAPI.POGOProtos.Inventory.Item.ItemId
-    itemData = Object.keys(itemData).reduce((obj, key) => {
-      obj[ itemData[key] ] = key.toLowerCase().replace('item_', '')
+    // var itemData = PokemonGOAPI.POGOProtos.Inventory.Item.ItemId
+    // itemData = Object.keys(itemData).reduce((obj, key) => {
+    //   obj[ itemData[key] ] = key.toLowerCase().replace('item_', '')
 
-      inventory.items[obj[itemData[key]]] = new PokemonGOAPI.POGOProtos.Inventory.InventoryItem
-      return obj
-    }, {})
+    //   inventory.items[obj[itemData[key]]] = new PokemonGOAPI.POGOProtos.Inventory.InventoryItem
+    //   return obj
+    // }, {})
 
-    for(let thing of res.GetInventoryResponse.inventory_delta.inventory_items){
-      let data = thing.inventory_item_data
 
-      if (data.pokemon_data) {
-        let pokemon = new Pokemon(data.pokemon_data, this)
-        data.pokemon_data.is_egg
-          ? inventory.eggs.push(pokemon)
-          : inventory.pokemons.push(pokemon)
-      } else if (data.item) {
-        inventory.items[itemData[data.item.item_id]] = new Item(data.item, this)
-      }
-      else if (data.candy) {
-        inventory.candies.push(new Item(data.candy, this))
-      }
 
-      //update player stats
-      Object.assign(this.player, data.player_stats)
+    // for(let thing of res.GetInventoryResponse.inventory_delta.inventory_items){
+    //   let data = thing.inventory_item_data
 
-    }
-    return inventory
+    //   if (data.pokemon_data) {
+    //     let pokemon = new Pokemon(data.pokemon_data, this)
+    //     data.pokemon_data.is_egg
+    //       ? inventory.eggs.push(pokemon)
+    //       : inventory.pokemons.push(pokemon)
+    //   }
+
+    //   //items
+    //   if (data.item)
+    //     inventory.items[itemData[data.item.item_id]] = new Item(data.item, this)
+
+    //   //candy
+    //   if (data.candy)
+    //     inventory.candies.push(new Item(data.candy, this))
+  
+    //   //player stats
+    //   if (data.player_stats)
+    //     Object.assign(this.player, data.player_stats)
+    // }
+
+
+    // return inventory
   }
 
 
@@ -138,7 +135,7 @@ class PokemonGOAPI {
   /**
    * [GetPlayer description]
    */
-  async GetPlayer(s) {
+  async GetPlayer() {
     let res = await this.Call([{ request: 'GET_PLAYER' }])
     this.player.playerInfo.sessionData = res.GetPlayerResponse.player_data
     return res.GetPlayerResponse.player_data
