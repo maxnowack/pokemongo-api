@@ -133,9 +133,9 @@ class Player {
     let prettyJson = JSON.stringify(cacheObj, null, 2)
     try {
       fs.writeFileSync(LOGIN_CACHE_LOCATION, prettyJson)
-      this.parent.log.info('Login cache saved to file!')
+      this.parent.log.info('[i] Login cache saved to file!')
     } catch (err) {
-      this.parent.log.info('Error saving cache to file: ' + err)
+      this.parent.log.error('[!] Error saving cache to file: ' + err)
     }
 
     this.playerInfo.username = user
