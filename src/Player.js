@@ -91,42 +91,51 @@ class Player {
     var loginCache = null
 
     if (!forceRefreshLogin) {
-      console.log('Checking for login cache.')
+      this.parent.log.info('[i] Checking for login cache.')
       try {
         loginCacheString = fs.readFileSync(LOGIN_CACHE_LOCATION, 'utf8')
+        try {
+          loginCache = JSON.parse(loginCacheString)[user]
+        } catch (err) {
+          this.parent.log.error('[!] Could not parse loginCache: ' + err)
+        }
       } catch (err) {
-        console.log('Could not read loginCache: ' + err)
+        this.parent.log.info('[i] Could not read loginCache: ' + err)
       }
-      try {
-        loginCache = JSON.parse(loginCacheString)
-      } catch (err) {
-        console.log('Could not parse loginCache: ' + err)
-      }
+
     }
 
     var res
+    
     if (loginCache &&
-        (user === loginCache.username) &&
         ((Date.now() - loginCache.timestamp) < 10 * MILLIS_PER_MINUTE)) {
-      console.log('Logging in with cache.')
+      this.parent.log.info('[i] Logging in with cache.')
       res = loginCache.accessToken
     } else {
-      console.log('Logging in with regular auth.')
+      this.parent.log.info('[i] Logging in with regular auth.')
       res = await this.Auth.login(user, pass, this.playerInfo.provider)
     }
-
-    // Save login details to disk.
-    let cacheObj = {
-      username: user,
-      accessToken: res,
-      timestamp: Date.now(),
+    let file = {}
+    try {
+      // Load login details from disk.
+      file = JSON.parse(loginCacheString);
+    } catch (err) {
+      // ok do nothing, rewrite file...
     }
+
+    let cacheObj = {
+        accessToken: res,
+        timestamp: Date.now(),
+    }
+    // add / overwrite login details to file.
+    file[user] = cacheObj
+
     let prettyJson = JSON.stringify(cacheObj, null, 2)
     try {
       fs.writeFileSync(LOGIN_CACHE_LOCATION, prettyJson)
-      console.log('Login cache saved to file!')
+      this.parent.log.info('Login cache saved to file!')
     } catch (err) {
-      console.log('Error saving cache to file: ' + err)
+      this.parent.log.info('Error saving cache to file: ' + err)
     }
 
     this.playerInfo.username = user
