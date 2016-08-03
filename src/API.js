@@ -98,6 +98,12 @@ class Connection {
       }
     }
 
+    if (res.status_code == 2){
+      this.parent.log.error('[!] Response error, lets try again.. in 2 seconds')
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      this.Request(reqs, userObj)
+    }
+
     if (res.auth_ticket)
       this.auth_ticket = res.auth_ticket
 
