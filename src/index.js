@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import Player from '~/Player'
 import API from '~/API'
 import Inventory from '~/Inventory'
@@ -30,7 +31,7 @@ class PokemonGOAPI {
     this.logging = (props && props.logging) != null
       ? props.logging
       : true // logging defaults to true
-    
+
     this.requestInterval = (props && props.requestInterval) != null
       ? props.requestInterval
       : PAUSE_BETWEEN_REQUESTS // logging defaults to settings.js
@@ -174,7 +175,7 @@ class PokemonGOAPI {
 
 
     let finalWalk = getCellIDs(this.player.playerInfo.latitude, this.player.playerInfo.longitude).sort().slice(0,21)
-    let nullarray = Array(21).fill(0) 
+    let nullarray = Array(21).fill(0)
     let res = await this.Call([{
       request: 'GET_MAP_OBJECTS',
       message: {
