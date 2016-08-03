@@ -126,10 +126,9 @@ class PokemonGOAPI {
       }
 
       //update player stats
-      this.player.update(data.player_stats)
+      Object.assign(this.player, data.player_stats)
 
     }
-
     return inventory
   }
 

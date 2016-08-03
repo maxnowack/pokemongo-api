@@ -62,7 +62,7 @@ class Player {
    * Player experience
    * @return {int} player experience
    */
-  get experience(){
+  get Experience(){
     return this.experience
   }
 
@@ -70,7 +70,7 @@ class Player {
    * Previous level required xp
    * @return {int} xp required for level
    */
-  get prev_level_xp(){
+  get PrevXpLevel(){
     return this.prev_level_xp
   }
   
@@ -78,7 +78,7 @@ class Player {
    * Next level required xp
    * @return {int} xp required for level
    */
-  get next_level_xp(){
+  get NextXpLevel(){
     return this.next_level_xp
   }
 
@@ -86,7 +86,7 @@ class Player {
    * Km walked in total
    * @return {float} total distance in km
    */
-  get km_walked(){
+  get KmWalked(){
     return this.km_walked
   }
 
@@ -94,7 +94,7 @@ class Player {
    * Pokemons encountered
    * @return {int} number of pokemons
    */
-  get pokemons_encountered(){
+  get PokemonsEncountered(){
     return this.pokemons_encountered
   }
 
@@ -102,7 +102,7 @@ class Player {
    * Unique pokedex entries
    * @return {int} total number of pokedex entries
    */
-  get unique_pokedex_entries(){
+  get UniquePokedexEntries(){
     return this.unique_pokedex_entries
   }
 
@@ -110,7 +110,7 @@ class Player {
    * Pokemons captured
    * @return {int} total captured
    */
-  get pokemons_captured(){
+  get PokemonsCaptured(){
     return this.pokemons_captured
   }
 
@@ -118,7 +118,7 @@ class Player {
    * Evolutions
    * @return {int} Total evolutions
    */
-  get evolutions(){
+  get Evolutions(){
     return this.evolutions
   }
 
@@ -126,7 +126,7 @@ class Player {
    * Poke stop visits
    * @return {int} total pokestop visits
    */
-  get poke_stop_visits(){
+  get PokeStopVisits(){
     return this.poke_stop_visits
   }
 
@@ -134,7 +134,7 @@ class Player {
    * Pokeballs thrown 
    * @return {int} Total balls throwed
    */
-  get pokeballs_thrown(){
+  get PokeballsThrown(){
     return this.pokeballs_thrown
   }
 
@@ -142,7 +142,7 @@ class Player {
    * Eggs hatched
    * @return {int} total eggs hatched
    */
-  get eggs_hatched(){
+  get EggsHatched(){
     return this.eggs_hatched
   }
 
@@ -150,7 +150,7 @@ class Player {
    * Big Magikarp captured
    * @return {int} total captured
    */
-  get big_magikarp_caught(){
+  get BigMagikarpCaught(){
     return this.big_magikarp_caught
   }
 
@@ -158,7 +158,7 @@ class Player {
    * Gym battles won
    * @return {int} total battles won
    */
-  get battle_attack_won(){
+  get BattleAttackWon(){
     return this.battle_attack_won
   }
 
@@ -166,7 +166,7 @@ class Player {
    * Gym attacks
    * @return {int} total attacks
    */
-  get battle_attack_total(){
+  get BattleAttackTotal(){
     return this.battle_attack_total
   }
 
@@ -174,7 +174,7 @@ class Player {
    * Gym defendings
    * @return {int} total defendings
    */
-  get battle_defended_won(){
+  get BattleDefendedWon(){
     return this.battle_defended_won
   }
 
@@ -182,7 +182,7 @@ class Player {
    * Gym training won
    * @return {int} total trainings won
    */
-  get battle_training_won(){
+  get BattleTrainingWon(){
     return this.battle_training_won
   }
 
@@ -190,7 +190,7 @@ class Player {
    * Gym training total
    * @return {int} amount of training sessions
    */
-  get battle_training_total(){
+  get BattleTrainingTotal(){
     return this.battle_training_total
   }
 
@@ -198,7 +198,7 @@ class Player {
    * Presige raised
    * @return {int} total presige
    */
-  get prestige_raised_total(){
+  get PrestigeRaisedTotal(){
     return this.prestige_raised_total
   }
 
@@ -206,7 +206,7 @@ class Player {
    * Prestige dropped
    * @return {int} total dropped
    */
-  get prestige_dropped_total(){
+  get PrestigeDroppedTotal(){
     return this.prestige_dropped_total
   }
 
@@ -214,7 +214,7 @@ class Player {
    * Pokemons deployed
    * @return {int} total pokemons deployed
    */
-  get pokemon_deployed(){
+  get PokemonDeployed(){
     return this.pokemon_deployed
   }
 
@@ -222,10 +222,9 @@ class Player {
    * Small Rattata captured
    * @return {int} total captured
    */
-  get small_rattata_caught(){
+  get SmallRattataCaught(){
     return this.small_rattata_caught
   }
-
 
 
   /**
@@ -243,19 +242,11 @@ class Player {
 
 
 
-
-
-
-
-
-
-
-
   /**
    * Get Player level
    * @return {int} player level
    */
-  get level(){
+  get Level(){
     return this.level
   }
 
