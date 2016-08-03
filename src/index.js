@@ -124,6 +124,10 @@ class PokemonGOAPI {
       else if (data.candy) {
         inventory.candies.push(new Item(data.candy, this))
       }
+
+      //update player stats
+      this.player.update(data.player_stats)
+
     }
 
     return inventory

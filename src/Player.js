@@ -58,6 +58,207 @@ class Player {
     return this.playerInfo
   }
 
+  /**
+   * Player experience
+   * @return {int} player experience
+   */
+  get experience(){
+    return this.experience
+  }
+
+  /**
+   * Previous level required xp
+   * @return {int} xp required for level
+   */
+  get prev_level_xp(){
+    return this.prev_level_xp
+  }
+  
+  /**
+   * Next level required xp
+   * @return {int} xp required for level
+   */
+  get next_level_xp(){
+    return this.next_level_xp
+  }
+
+  /**
+   * Km walked in total
+   * @return {float} total distance in km
+   */
+  get km_walked(){
+    return this.km_walked
+  }
+
+  /**
+   * Pokemons encountered
+   * @return {int} number of pokemons
+   */
+  get pokemons_encountered(){
+    return this.pokemons_encountered
+  }
+
+  /**
+   * Unique pokedex entries
+   * @return {int} total number of pokedex entries
+   */
+  get unique_pokedex_entries(){
+    return this.unique_pokedex_entries
+  }
+
+  /**
+   * Pokemons captured
+   * @return {int} total captured
+   */
+  get pokemons_captured(){
+    return this.pokemons_captured
+  }
+
+  /**
+   * Evolutions
+   * @return {int} Total evolutions
+   */
+  get evolutions(){
+    return this.evolutions
+  }
+
+  /**
+   * Poke stop visits
+   * @return {int} total pokestop visits
+   */
+  get poke_stop_visits(){
+    return this.poke_stop_visits
+  }
+
+  /**
+   * Pokeballs thrown 
+   * @return {int} Total balls throwed
+   */
+  get pokeballs_thrown(){
+    return this.pokeballs_thrown
+  }
+
+  /**
+   * Eggs hatched
+   * @return {int} total eggs hatched
+   */
+  get eggs_hatched(){
+    return this.eggs_hatched
+  }
+
+  /**
+   * Big Magikarp captured
+   * @return {int} total captured
+   */
+  get big_magikarp_caught(){
+    return this.big_magikarp_caught
+  }
+
+  /**
+   * Gym battles won
+   * @return {int} total battles won
+   */
+  get battle_attack_won(){
+    return this.battle_attack_won
+  }
+
+  /**
+   * Gym attacks
+   * @return {int} total attacks
+   */
+  get battle_attack_total(){
+    return this.battle_attack_total
+  }
+
+  /**
+   * Gym defendings
+   * @return {int} total defendings
+   */
+  get battle_defended_won(){
+    return this.battle_defended_won
+  }
+
+  /**
+   * Gym training won
+   * @return {int} total trainings won
+   */
+  get battle_training_won(){
+    return this.battle_training_won
+  }
+
+  /**
+   * Gym training total
+   * @return {int} amount of training sessions
+   */
+  get battle_training_total(){
+    return this.battle_training_total
+  }
+
+  /**
+   * Presige raised
+   * @return {int} total presige
+   */
+  get prestige_raised_total(){
+    return this.prestige_raised_total
+  }
+
+  /**
+   * Prestige dropped
+   * @return {int} total dropped
+   */
+  get prestige_dropped_total(){
+    return this.prestige_dropped_total
+  }
+
+  /**
+   * Pokemons deployed
+   * @return {int} total pokemons deployed
+   */
+  get pokemon_deployed(){
+    return this.pokemon_deployed
+  }
+
+  /**
+   * Small Rattata captured
+   * @return {int} total captured
+   */
+  get small_rattata_caught(){
+    return this.small_rattata_caught
+  }
+
+
+
+  /**
+   * Pokemons captured by type
+   * @return {[type]} [description]
+   */
+  // get pokemon_caught_by_type(){
+  //   return this.pokemon_caught_by_type
+  // }
+  // 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /**
+   * Get Player level
+   * @return {int} player level
+   */
+  get level(){
+    return this.level
+  }
+
   // TODO return Date obj
   get createdDate() {
     var date = new moment((this.playerInfo.sessionData.creation_timestamp_ms.toString() / 100)).format("dddd, MMMM Do YYYY, h:mm:ss a")
@@ -65,19 +266,31 @@ class Player {
     return date
   }
 
-  get pokeStorage() {
+  /**
+   * Pokemon max storage
+   * @return {int} the max allowed pokemons in storage
+   */
+  get pokeMaxStorage() {
     var storage = this.playerInfo.sessionData.max_pokemon_storage
     this.parent.log.info(`[+] Poke Storage: {${storage}}`)
     return storage
   }
 
-  get itemsStorage() {
+  /**
+   * Items max storage
+   * @return {int} the max allowed items in storage
+   */
+  get itemsMaxStorage() {
     var storage = this.playerInfo.sessionData.max_item_storage
     this.parent.log.info(`[+] Item Storage: {${storage}}`)
     return storage
   }
 
-  // TODO use getter
+
+  /**
+   * Get player currencies
+   * @return {array} array with type and storage(amount)
+   */
   get currency() {
     var curr = this.playerInfo.sessionData.currencies
     curr.map(obj => {
@@ -136,6 +349,10 @@ class Player {
     return this.playerInfo
   }
 
+  /**
+   * Walk around like a human
+   * @return {bool} returns true when done
+   */
   walkAround(){
     let random = getRandomDirection()
 
@@ -147,9 +364,16 @@ class Player {
     let distance = geolib.getDistance(this.location, destination)
     this.location = destination
     this.parent.log.info(`[i] We just walked ${distance} meters`)
+    return true
   }
 
 
+  /**
+   * Walk towards a point in human manner 
+   * @param  {float} lat  latidude of the point to move against
+   * @param  {float} long longitude of the point to move against
+   * @return {bool} returns true when move complete
+   */
   async walkToPoint(lat, long){
 
     let latRand = ((Math.floor((Math.random() * 13) + 1))/100000)
@@ -187,7 +411,10 @@ class Player {
   }
 
 
-
+  /**
+   * Player settings
+   * @return {DownloadSettingsResponse} retrieves the player settings
+   */
   settings() {
     return this.parent.Call([{
       request: 'DOWNLOAD_SETTINGS',
@@ -197,12 +424,21 @@ class Player {
     }])
   }
 
+  /**
+   * Downloads item templates
+   * @return {DownloadItemTemplatesResponse}
+   */
   itemTemplates() {
     return this.parent.Call([{
       request: 'DOWNLOAD_ITEM_TEMPLATES',
     }])
   }
 
+
+  /**
+   * Download configuration with app version, and so on
+   * @return {DownloadRemoteConfigVersionResponse}
+   */
   remoteConfigVersion() {
     return this.parent.Call([{
       request: 'DOWNLOAD_REMOTE_CONFIG_VERSION',
