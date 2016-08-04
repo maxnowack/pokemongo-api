@@ -265,7 +265,6 @@ class Inventory {
       if (data.player_stats)
         Object.assign(this.parent.player, data.player_stats)
     }
-    console.log(this.items)
     return true
   }
 

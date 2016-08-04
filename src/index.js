@@ -89,44 +89,8 @@ class PokemonGOAPI {
    * @return {[type]}     [description]
    */
   async GetInventory() {
-    await this.inventory.update()
-
-
-    // var itemData = PokemonGOAPI.POGOProtos.Inventory.Item.ItemId
-    // itemData = Object.keys(itemData).reduce((obj, key) => {
-    //   obj[ itemData[key] ] = key.toLowerCase().replace('item_', '')
-
-    //   inventory.items[obj[itemData[key]]] = new PokemonGOAPI.POGOProtos.Inventory.InventoryItem
-    //   return obj
-    // }, {})
-
-
-
-    // for(let thing of res.GetInventoryResponse.inventory_delta.inventory_items){
-    //   let data = thing.inventory_item_data
-
-    //   if (data.pokemon_data) {
-    //     let pokemon = new Pokemon(data.pokemon_data, this)
-    //     data.pokemon_data.is_egg
-    //       ? inventory.eggs.push(pokemon)
-    //       : inventory.pokemons.push(pokemon)
-    //   }
-
-    //   //items
-    //   if (data.item)
-    //     inventory.items[itemData[data.item.item_id]] = new Item(data.item, this)
-
-    //   //candy
-    //   if (data.candy)
-    //     inventory.candies.push(new Item(data.candy, this))
-  
-    //   //player stats
-    //   if (data.player_stats)
-    //     Object.assign(this.player, data.player_stats)
-    // }
-
-
-    // return inventory
+    this.log.info('[!] GetInventory: DEPRECATED! USE: Poke.inventory.update()')
+    return this.inventory.update()
   }
 
 
