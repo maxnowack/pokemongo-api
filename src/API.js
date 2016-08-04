@@ -39,7 +39,10 @@ class Connection {
         this.parent.log.info('[!] Response error!')
         throw error
       }
-    })
+    if (ResponseType == 'GetMapObjectsResponse'){
+      console.log(respt.GetMapObjectsResponse.map_cells)
+    }
+    }) 
 
     return respt
   }
@@ -77,6 +80,7 @@ class Connection {
 
     let body = await res.buffer()
 
+
     try {
       res = POGOProtos.Networking.Envelopes.ResponseEnvelope.decode(body);
     } catch (e) {
@@ -84,6 +88,12 @@ class Connection {
         this.parent.log.warn(e);
         res = e.decoded; // Decoded message with missing required fields
       }
+    }
+
+    if (res.status_code == 2){
+      this.parent.log.error('[!] Response error, lets try again.. in 2 seconds')
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      this.Request(reqs, userObj)
     }
 
     if (res.auth_ticket)
