@@ -39,7 +39,10 @@ class Connection {
         this.parent.log.info('[!] Response error!')
         throw error
       }
-    })
+    if (ResponseType == 'GetMapObjectsResponse'){
+      console.log(respt.GetMapObjectsResponse.map_cells)
+    }
+    }) 
 
     return respt
   }
@@ -88,6 +91,7 @@ class Connection {
         .on('data', chunk => chunks.push(chunk))
         .on('end', () => resolve(Buffer.concat(chunks)))
     })
+
 
     try {
       res = POGOProtos.Networking.Envelopes.ResponseEnvelope.decode(body);

@@ -1,5 +1,6 @@
 import Pokemon from '~/Pokemon'
 
+import _ from 'lodash'
 import Protobuf from 'protobufjs'
 import path from 'path'
 
@@ -208,7 +209,7 @@ class Candies extends Array {}
 class Inventory {
   constructor(parent){
     this.parent = parent
-    // this.items = new Items
+    this.items = new Items
     this.pokemons = new Pokemons
     this.eggs = new Eggs
     this.candies = new Candies
@@ -237,11 +238,10 @@ class Inventory {
 
     var itemData = POGOProtos.Inventory.Item.ItemId
     itemData = Object.keys(itemData).reduce((obj, key) => {
-      obj[ itemData[key] ] = key.toLowerCase().replace('item_', '')
+      obj[ itemData[key] ] = _.camelCase(key.toLowerCase().replace('item_', ''))
       inventory.items[obj[itemData[key]]] = new POGOProtos.Inventory.InventoryItem
       return obj
     }, {})
-
 
     for(let thing of res.GetInventoryResponse.inventory_delta.inventory_items){
       let data = thing.inventory_item_data
@@ -255,8 +255,7 @@ class Inventory {
 
       //items
       if (data.item)
-        inventory.items[itemData[data.item.item_id]] = new Item(data.item, this)
-
+        this.items[itemData[data.item.item_id]] = data.item
 
       //candy
       if (data.candy)
@@ -264,8 +263,9 @@ class Inventory {
   
       //player stats
       if (data.player_stats)
-        Object.assign(this.player, data.player_stats)
+        Object.assign(this.parent.player, data.player_stats)
     }
+    console.log(this.items)
     return true
   }
 
