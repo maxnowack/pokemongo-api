@@ -1,4 +1,4 @@
-import pokedex from '../pokedex.json'
+import pokedex from 'pokemon-go-pokedex'
 import rand from 'randgen'
 
 const pokedexMap = new Map();
