@@ -2,10 +2,19 @@
 
 Pokemon Go API for nodejs
 
+___So guys i am really sorry to say that this repo will be discontinued. For 2 reasons:___
+* Niantic added a encrypted signature to theyr header on the GetMapObjects request. And for a good reason, they dont want bots, or people playing around with theyr app with scripts. 
+* People are using this and other scripts to create bots and sell them for money.  
+___Altho this encryption is cracked (not by us!) and can easily be integrated in JS, we will not add the signature to the header, and we will not provide details on how to do this.___
+
+___PS: if you want to take over the repo, feel free to post a issue for it___
+
+
 
 Query the Pokemon database for what you want..
 This library covers all functions available in the api through `Call()`
 We are also working on porting all calls into functions,
+
 
 ## Install
 ```
@@ -62,28 +71,6 @@ while( true ) {
 ```
 
 
-# To-Do:
-- [x] Login as pokemon trainer + token
-- [x] Login over google + token
-- [x] API connector
-- [X] Make all calls available in functions
-- [ ] Add proxy options to requests
-- [X] Run to pokestops
-- [X] Farm specific area for pokestops
-- [X] Human walking logic
-- [X] Catch Pokemon automatically
-- [ ] Drop items when bag is full
-- [ ] Scan your inventar for XYZ CP pokemon and release them
-- [X] Pokemon catch filter
-- [ ] Hatch eggs
-- [X] Incubate eggs
-- [X] Evolve pokemons
-- [X] Use candy
-- [x] Clean code
-- [ ] Fully automate this script
-
-
-
 ## Player Object
 ```
 {
@@ -95,7 +82,27 @@ while( true ) {
   longitude
   altitude
   provider
-  sessionData
+  experience
+  prev_level_xp
+  next_level_xp
+  km_walked
+  pokemons_encountered
+  unique_pokedex_entries
+  pokemons_captured
+  evolutions
+  poke_stop_visits
+  pokeballs_thrown
+  eggs_hatched
+  big_magikarp_caught
+  battle_attack_won
+  battle_attack_total
+  battle_defended_won
+  battle_training_won
+  battle_training_total
+  prestige_raised_total
+  prestige_dropped_total
+  pokemon_deployed
+  small_rattata_caught
 }
 ```
 #### Available functions
@@ -119,7 +126,6 @@ player.collectDailyBonus()
 player.collectDailyBonus()
 player.settings()
 player.itemTemplates()
-player.remoteConfigVersion()
 player.remoteConfigVersion()
 ```
 
@@ -194,53 +200,17 @@ pokemon.nickname()
 ```
 fort.isCheckpoint
 fort.isGym
-fort.search()
-fort.recallPokemon(Pokemon Object)
-fort.deployPokemon(Pokemon Object)
-fort.details()
-fort.addModifier()
-```
-
-
-
-## Poke.GetPlayer()
-- Returns the Player Object.
-
-```js
-profile{
-  creation_time: {Number}
-  username: {String}
-  team: {Number}
-  tutorial: {Number/Boolean}
-  poke_storage: {String}
-  item_storage: {String}
-  daily_bonus{
-    NextCollectTimestampMs: {Number}
-    NextDefenderBonusCollectTimestampMs: {Number}
-  }
-  currency{
-    type: {String}
-    amount: {Number}
-  }
-}
-```
-
-
-## Poke.GetInventory()
-- Retrives the inventory object.
-
-```js
-  inventory_delta{
-    pokemon_data : {object}
-    item : {object}
-    pokedex_entry : {object}
-    player_stats : {object}
-    player_currency : {object}
-    player_camera : {object}
-    inventory_upgrades : {object}
-    applied_items : {object}
-    egg_incubators : {object}
-    pokemon_family : {object}
-
-  }
+gym.isSameTeam()
+gym.isNeutral()
+gym.points()
+gym.isInBattle()
+gym.guardPokemon()
+gym.details()
+gym.recallPokemon()
+gym.deployPokemon()
+gym.startBattle()
+gym.attack()
+gym.instaWinBattle()
+checkpoint.details()
+checkpoint.search()
 ```
