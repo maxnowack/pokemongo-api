@@ -7,6 +7,9 @@ import _ from 'lodash'
 import fetch from 'node-fetch'
 import Protobuf from 'protobufjs'
 import path from 'path'
+import long from 'long'
+import Crypto from 'crypto'
+import PoGoSignature from 'node-pogo-signature'
 
 var builder = Protobuf.newBuilder();
 
@@ -21,6 +24,8 @@ class Connection {
     this.endPoint = API_URL
     this.auth_ticket = null
     this.numConsecutiveEndpointFailures = 0;
+
+    this.signatureBuilder = new PoGoSignature.Builder()
   }
 
   async Request(requests, userObj){
@@ -103,6 +108,8 @@ class Connection {
       return res
     else
       throw new Error("Nothing in reponse..")
+
+
   }
 
   async setEndpoint(user){
@@ -172,10 +179,25 @@ class Connection {
       altitude: userObj.altitude,
       unknown12: 989,
       requests: req,
+      unknown6: {}
+
     }
 
     if(this.auth_ticket != null) {
       data.auth_ticket = this.auth_ticket
+
+      this.signatureBuilder.setAuthTicket(this.auth_ticket)
+      this.signatureBuilder.setLocation(userObj.latitude, userObj.longitude, userObj.altitude)
+      var res = this.signatureBuilder.encrypt(req, (err, sigEncrypted) =>{
+
+        data.unknown6.push(new POGOProtos.Networking.Envelopes.Unknown6({
+            request_type: 6,
+            unknown2: new POGOProtos.Networking.Envelopes.Unknown6.Unknown2({
+                encrypted_signature: sigEncrypted
+            })
+        }))
+        return new POGOProtos.Networking.Envelopes.RequestEnvelope(data);
+      })
     } else {
       data.auth_info = new POGOProtos.Networking.Envelopes.RequestEnvelope.AuthInfo({
         provider: userObj.provider,
@@ -184,12 +206,8 @@ class Connection {
           unknown2: 59,
         })
       })
+      return new POGOProtos.Networking.Envelopes.RequestEnvelope(data);
     }
-
-    if (this.auth_ticket != null)
-      data.auth_ticket = this.auth_ticket
-
-    return new POGOProtos.Networking.Envelopes.RequestEnvelope(data);
   }
 
   set authTicket(body) {

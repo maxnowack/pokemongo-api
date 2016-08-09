@@ -31,7 +31,7 @@ class Player {
       altitude: 0,
       provider: '',
       sessionData: {},
-      lastCheckpointSearch: {}
+      lastCheckpointSearch: {},
     }
     this.Auth = new Auth(parent)
   }
