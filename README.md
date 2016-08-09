@@ -2,15 +2,6 @@
 
 Pokemon Go API for nodejs
 
-___So guys i am really sorry to say that this repo will be discontinued. For 2 reasons:___
-* Niantic added a encrypted signature to theyr header on the GetMapObjects request. And for a good reason, they dont want bots, or people playing around with theyr app with scripts. 
-* People are using this and other scripts to create bots and sell them for money.  
-
-___Altho this encryption is cracked (not by us!) and can easily be integrated in JS, we will not add the signature to the header, and we will not provide details on how to do this.___
-
-___PS: if you want to take over the repo, feel free to post a issue for it___
-
-
 Query the Pokemon database for what you want..
 This library covers all functions available in the api through `Call()`
 We are also working on porting all calls into functions,
