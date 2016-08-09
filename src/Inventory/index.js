@@ -323,6 +323,15 @@ class Inventory {
 
     return weakestPokemon;
   }
+
+  
+  /**
+   * All favorized pokemons
+   * @return {Array} Array with all favorite pokemons
+   */
+  getPokemonFavorites() {
+    return _.filter(this.pokemons, {favorite: 1})
+  }
 }
 
 
