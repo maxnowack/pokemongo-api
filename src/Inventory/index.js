@@ -264,7 +264,6 @@ class Inventory {
    * @return {Inventory} returns updated inventory object 
    */
   async cleanupPokemonDupes() {
-    console.log('dupe check')
 
     let noDupes=[]
     for (let pokemon of this.pokemons) {
@@ -284,7 +283,7 @@ class Inventory {
     await this.update()
     return this
   }
-  
+
 
   /**
    * Release all pokemon under a specific CP
