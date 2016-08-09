@@ -7,12 +7,10 @@ import _ from 'lodash'
 import fetch from 'node-fetch'
 import Protobuf from 'protobufjs'
 import path from 'path'
-import long from 'long'
-import Crypto from 'crypto'
+import Long from 'long'
+import crypto from 'crypto'
 import PoGoSignature from 'node-pogo-signature'
 import POGOProtos from 'node-pogo-protos'
-
-var builder = Protobuf.newBuilder();
 
 class Connection {
   constructor(parent) {
@@ -146,6 +144,15 @@ class Connection {
     }
   }
 
+  _getRequestID() {
+      var bytes = crypto.randomBytes(8);
+      return Long.fromBits(
+          bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3],
+          bytes[4] << 24 | bytes[5] << 16 | bytes[6] << 8 | bytes[7],
+          true
+      );
+  };
+
   _serializeRequest(reqs) {
     return reqs.map( req => {
       var Requests = POGOProtos.Networking.Requests
@@ -166,7 +173,7 @@ class Connection {
   _serializeHeader(req, userObj) {
     var data = new POGOProtos.Networking.Envelopes.RequestEnvelope({
       status_code: 2,
-      request_id: 1469378659230941192,
+      request_id: this._getRequestID(),
       latitude: userObj.latitude,
       longitude: userObj.longitude,
       altitude: userObj.altitude,
