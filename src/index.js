@@ -62,9 +62,9 @@ class PokemonGOAPI {
     }
 
     this.player.provider = provider
-
     await this.player.Login(username, password, forceRefreshLogin)
     await this.api.setEndpoint(this.player.playerInfo)
+    await this.inventory.update()
 
     return this
   }

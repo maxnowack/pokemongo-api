@@ -226,17 +226,9 @@ class Inventory {
       }
     }])
 
-    let inventory = {
-      pokemons: [],
-      items: {},
-      eggs: [],
-      candies: []
-    }
-
     var itemData = POGOProtos.Inventory.Item.ItemId
     itemData = Object.keys(itemData).reduce((obj, key) => {
       obj[ itemData[key] ] = _.camelCase(key.toLowerCase().replace('item_', ''))
-      inventory.items[obj[itemData[key]]] = new POGOProtos.Inventory.InventoryItem
       return obj
     }, {})
 
@@ -244,7 +236,7 @@ class Inventory {
       let data = thing.inventory_item_data
 
       if (data.pokemon_data) {
-        let pokemon = new Pokemon(data.pokemon_data, this)
+        let pokemon = new Pokemon(data.pokemon_data, this.parent)
         data.pokemon_data.is_egg
           ? this.eggs.push(pokemon)
           : this.pokemons.push(pokemon)
@@ -268,11 +260,69 @@ class Inventory {
 
 
   /**
-   * Adds the items from a checkpoint in to the Inventory
+   * Releases all dupe pokemons (keeps the one with highest CP)
+   * @return {Inventory} returns updated inventory object 
    */
-  add() {
+  async cleanupPokemonDupes() {
+
+    let noDupes=[]
+    for (let pokemon of this.pokemons) {
+      if (noDupes[pokemon.num] !== undefined){
+
+        if (noDupes[pokemon.num].cp < pokemon.cp){
+          noDupes[pokemon.num].release()
+          noDupes[pokemon.num] = pokemon
+        }else
+          pokemon.release()
+
+        await new Promise(resolve => setTimeout(resolve, 500))
+      }else{
+        noDupes[pokemon.num] = pokemon
+      }
+    }
+    await this.update()
+    return this
   }
 
+
+  /**
+   * Release all pokemon under a specific CP
+   * @return {Inventory} returns updated inventory object 
+   */
+  async cleanupPokemonUnderCP(cp) {
+    try {
+      for (let pokemon of this.pokemons) {
+        if (pokemon.cp < cp) {
+          await pokemon.release()
+          await new Promise(resolve => setTimeout(resolve, 500))
+        }
+      }
+      await this.update()
+      return this
+
+    } catch (exception) {
+      throw new Error(exception)
+    }
+  }
+
+
+  /**
+   * Get the weakest  pokemon
+   * @return {Pokemon} The weakest pokemon
+   */
+  getWeakestPokemon() {
+    let weakestPokemon;
+    let weakestPokemonCP = 9999999;
+
+    for (let pokemon of this.pokemons) {
+      if (pokemon.cp < weakestPokemonCP) {
+        weakestPokemonCP = pokemon.cp;
+        weakestPokemon = pokemon;
+      }
+    }
+
+    return weakestPokemon;
+  }
 }
 
 
