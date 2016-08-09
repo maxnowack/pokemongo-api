@@ -1,6 +1,5 @@
 import Player from '~/Player'
 import API from '~/API'
-// import Item from '~/Item'
 import Inventory from '~/Inventory'
 import Pokemon from '~/Pokemon'
 import Fort from '~/Fort'

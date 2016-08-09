@@ -7,13 +7,12 @@ import _ from 'lodash'
 import fetch from 'node-fetch'
 import Protobuf from 'protobufjs'
 import path from 'path'
+import long from 'long'
+import Crypto from 'crypto'
+import PoGoSignature from 'node-pogo-signature'
+import POGOProtos from 'node-pogo-protos'
 
 var builder = Protobuf.newBuilder();
-
-
-var rootPath= path.join(__dirname,'../')
-var bufferFile = Protobuf.loadProtoFile({ root: rootPath, file: "POGOProtos/POGOProtos.proto" })
-const POGOProtos = bufferFile.build("POGOProtos")
 
 class Connection {
   constructor(parent) {
@@ -21,6 +20,8 @@ class Connection {
     this.endPoint = API_URL
     this.auth_ticket = null
     this.numConsecutiveEndpointFailures = 0;
+
+    this.signatureBuilder = new PoGoSignature.Builder()
   }
 
   async Request(requests, userObj){
@@ -39,9 +40,6 @@ class Connection {
         this.parent.log.info('[!] Response error!')
         throw error
       }
-    if (ResponseType == 'GetMapObjectsResponse'){
-      console.log(respt.GetMapObjectsResponse.map_cells)
-    }
     }) 
 
     return respt
@@ -103,6 +101,8 @@ class Connection {
       return res
     else
       throw new Error("Nothing in reponse..")
+
+
   }
 
   async setEndpoint(user){
@@ -164,18 +164,30 @@ class Connection {
   }
 
   _serializeHeader(req, userObj) {
-    var data = {
+    var data = new POGOProtos.Networking.Envelopes.RequestEnvelope({
       status_code: 2,
       request_id: 1469378659230941192,
       latitude: userObj.latitude,
       longitude: userObj.longitude,
       altitude: userObj.altitude,
       unknown12: 989,
-      requests: req,
-    }
+      requests: req
+    })
+    
 
     if(this.auth_ticket != null) {
       data.auth_ticket = this.auth_ticket
+
+      this.signatureBuilder.setAuthTicket(this.auth_ticket)
+      this.signatureBuilder.setLocation(userObj.latitude, userObj.longitude, userObj.altitude)
+      var res = this.signatureBuilder.encrypt(req, (err, sigEncrypted) =>{
+        data.unknown6.push(new POGOProtos.Networking.Envelopes.Unknown6({
+            request_type: 6,
+            unknown2: new POGOProtos.Networking.Envelopes.Unknown6.Unknown2({
+                encrypted_signature: sigEncrypted
+            })
+        }))
+      })
     } else {
       data.auth_info = new POGOProtos.Networking.Envelopes.RequestEnvelope.AuthInfo({
         provider: userObj.provider,
@@ -189,16 +201,13 @@ class Connection {
     if (this.auth_ticket != null)
       data.auth_ticket = this.auth_ticket
 
-    return new POGOProtos.Networking.Envelopes.RequestEnvelope(data);
+    return data;
   }
 
   set authTicket(body) {
     if (res.auth_ticket)
       this.auth_ticket = res.auth_ticket
   }
-
 }
-
-Connection.POGOProtos = POGOProtos
 
 export default Connection
