@@ -137,7 +137,7 @@ class Player {
     let file = {}
     try {
       // Load login details from disk.
-      file = JSON.parse(loginCacheString);
+      file = JSON.parse(loginCacheString) || {};
     } catch (err) {
       // ok do nothing, rewrite file...
     }
