@@ -38,7 +38,7 @@ class Connection {
         this.parent.log.info('[!] Response error!')
         throw error
       }
-    }) 
+    })
 
     return respt
   }
@@ -66,6 +66,7 @@ class Connection {
       }
     }
 
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * (3000 - 1500) + 1500))
     let res = await fetch(this.endPoint, {
       body: protobuf,
       method: 'POST',
@@ -180,7 +181,7 @@ class Connection {
       unknown12: 989,
       requests: req
     })
-    
+
 
     if(this.auth_ticket != null) {
       data.auth_ticket = this.auth_ticket
