@@ -136,7 +136,7 @@ class Items {
    * @return {Item} the poke ball you can use
    */
   get bestBall() {
-    return 
+    return
       this.master_ball.count && this.master_ball ||
       this.ultra_ball.count && this.ultra_ball ||
       this.great_ball.count && this.great_ball ||
@@ -162,7 +162,7 @@ class Items {
    * @return {Boolean} true if the bag is full
    */
   get count() {
-    return 
+    return
       pokeBall.count+
       greatBall.count+
       ultraBall.count+
@@ -225,6 +225,12 @@ class Inventory {
         last_timestamp_ms: 0
       }
     }])
+    // Cleanup Inventory before adding new Content to it
+    // TODO: Update only the Changeset (last_timestamp_ms)
+    this.items = new Items;
+    this.pokemons = new Pokemons;
+    this.eggs = new Eggs;
+    this.candies = new Candies;
 
     var itemData = POGOProtos.Inventory.Item.ItemId
     itemData = Object.keys(itemData).reduce((obj, key) => {
@@ -249,7 +255,7 @@ class Inventory {
       //candy
       if (data.candy)
         this.candies.push(new Item(data.candy, this))
-  
+
       //player stats
       if (data.player_stats)
         Object.assign(this.parent.player, data.player_stats)
@@ -261,7 +267,7 @@ class Inventory {
 
   /**
    * Releases all dupe pokemons (keeps the one with highest CP)
-   * @return {Inventory} returns updated inventory object 
+   * @return {Inventory} returns updated inventory object
    */
   async cleanupPokemonDupes() {
 
@@ -287,7 +293,7 @@ class Inventory {
 
   /**
    * Release all pokemon under a specific CP
-   * @return {Inventory} returns updated inventory object 
+   * @return {Inventory} returns updated inventory object
    */
   async cleanupPokemonUnderCP(cp) {
     try {
@@ -324,7 +330,7 @@ class Inventory {
     return weakestPokemon;
   }
 
-  
+
   /**
    * All favorized pokemons
    * @return {Array} Array with all favorite pokemons
