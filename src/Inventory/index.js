@@ -137,10 +137,10 @@ class Items {
    */
   get bestBall() {
     return
-      this.master_ball.count && this.master_ball ||
-      this.ultra_ball.count && this.ultra_ball ||
-      this.great_ball.count && this.great_ball ||
-      this.poke_ball.count && this.poke_ball
+      this.masterBall.count && this.masterBall ||
+      this.ultraBall.count && this.ultraBall ||
+      this.greatBall.count && this.greatBall ||
+      this.pokeBall.count && this.pokeBall
   }
 
 
