@@ -3,10 +3,7 @@ import Pokemon from '~/Pokemon'
 import _ from 'lodash'
 import Protobuf from 'protobufjs'
 import path from 'path'
-
-var rootPath= path.join(__dirname,'../../')
-var bufferFile = Protobuf.loadProtoFile({ root: rootPath, file: "POGOProtos/POGOProtos.proto" })
-const POGOProtos = bufferFile.build("POGOProtos")
+import POGOProtos from 'node-pogo-protos'
 
 class Item {
   constructor(id){
